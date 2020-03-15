@@ -1,0 +1,6 @@
+<launch>
+    <include file ="$(find sim2real_dynamics_sawyer)/launch/observations/push_obs_2cams.launch"/>
+       <node name="push_control" pkg="sim2real_dynamics_sawyer" type="push_control.py" output="screen" >
+    </node>
+</launch>
+<!--launch-prefix="gnome-terminal command" -->

@@ -1,0 +1,45 @@
+<!-- Launch file for the apritag_ros package with camera 2 -->
+<launch>
+    <arg name="cam2_id" default="0"/>
+    <arg name="cam2_frame_id" default="cam2"/>
+    <arg name="cam2_name" default="cam2"/>
+    <arg name="rate" default="100"/>
+    <node name="cam2" pkg="cv_camera" type="cv_camera_node">
+        <param name="rate" type="int" value="$(arg rate)"/>
+        <param name="_frame_id" type="string" value="$(arg cam2_frame_id)"/>
+        <param name="_device_id" type="int" value="$(arg cam2_id)"/>
+        <param name="__name" type="string" value="$(arg cam2_name)"/>
+    </node>
+    <node name="rviz_transform_publisher" pkg="tf2_ros" type="static_transform_publisher"
+          args="0 0 0 0 0 0 1 /map /cam2">
+    </node>
+
+    <node name="cam2_rect" pkg="image_proc" type="image_proc" ns="cam2"/>
+
+
+
+    <arg name="launch_prefix" default=""/> <!-- set to value="gdbserver localhost:10000" for remote debugging -->
+    <arg name="node_namespace" default="apriltag_ros_continuous_node_cam2"/>
+    <arg name="camera_name" default="cam2"/>
+    <arg name="camera_frame" default="cam2"/>
+    <arg name="image_topic" default="image_rect_color"/>
+
+
+    <!-- Set parameters -->
+    <rosparam command="load" file="$(find sim2real_dynamics_sawyer)/config/april_ros/settings.yaml" ns="$(arg node_namespace)"/>
+    <rosparam command="load" file="$(find sim2real_dynamics_sawyer)/config/april_ros/tags.yaml" ns="$(arg node_namespace)"/>
+
+
+    <remap from="tag_detections" to="/cam2/tag_detections"/>
+    <remap from="tag_detections_image" to="/cam2/tag_detections_image"/>
+
+    <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="$(arg node_namespace)" clear_params="true"
+          output="screen" launch-prefix="$(arg launch_prefix)">
+        <!-- Remap topics from those used in code to those on the ROS network -->
+        <remap from="image_rect" to="$(arg camera_name)/$(arg image_topic)"/>
+        <remap from="camera_info" to="$(arg camera_name)/camera_info"/>
+
+        <param name="camera_frame" type="str" value="$(arg camera_frame)"/>
+        <param name="publish_tag_detections_image" type="bool" value="true"/>      <!-- default: false -->
+    </node>
+</launch>

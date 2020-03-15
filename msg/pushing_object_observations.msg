@@ -1,0 +1,4 @@
+geometry_msgs/Point object_pos_in_eefg
+geometry_msgs/Point object_vel_in_eefg
+float64 z_angle
+bool lost

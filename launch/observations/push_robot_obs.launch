@@ -1,0 +1,5 @@
+<!-- Launching the robot state observation publisher for the pushing task-->
+<launch>
+    <include file ="$(find sim2real_dynamics_sawyer)/launch/observations/manual_positioning.launch"/>
+    <node name="push_robot_obs_publisher" pkg="sim2real_dynamics_sawyer" type="push_robot_observation_publisher.py" output="screen" />
+ </launch>

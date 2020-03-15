@@ -1,0 +1,17 @@
+geometry_msgs/Pose object_pose_in_goal
+geometry_msgs/Point object_vel_in_goal
+bool object_lost
+bool goal_lost
+float64 z_angle
+float64 sin_z
+float64 cos_z
+float64 rot_1
+float64 rot_2
+float64 rot_3
+float64 rot_4
+float64 rot_5
+float64 rot_6
+float64 rot_7
+float64 rot_8
+float64 rot_9
+bool fallen_object

@@ -1,0 +1,116 @@
+<!-- Launch file for the apritag_ros package for with 2 cameras-->
+<launch>
+     <!-- Cameras -->
+     <!--Common Params-->
+     <arg name="rate" default="100"/>
+
+
+     <!-- Cam1 -->
+     <!--Params -->
+    <arg name="cam1_id" default="0"/>
+    <arg name="cam1_frame_id" default="cam1"/>
+    <arg name="cam1_name" default="cam1"/>
+
+    <!--Cam Node -->
+    <node name="cam1" pkg="cv_camera" type="cv_camera_node">
+        <param name="rate" type="int" value="$(arg rate)"/>
+        <param name="_frame_id" type="string" value="$(arg cam1_frame_id)"/>
+        <param name="_device_id" type="int" value="$(arg cam1_id)"/>
+        <param name="__name" type="string" value="$(arg cam1_name)"/>
+    </node>
+
+    <!--Rviz transform -->
+    <node name="rviz_transform_publisher_cam1" pkg="tf2_ros" type="static_transform_publisher"
+          args="0 0 0 0 0 0 1 /map /cam1">
+    </node>
+
+    <!-- Image rectification Node -->
+    <node name="cam1_rect" pkg="image_proc" type="image_proc" ns="cam1"/>
+
+    <!-- Cam2 -->
+    <!--Params -->
+    <arg name="cam2_id" default="0"/>
+    <arg name="cam2_frame_id" default="cam2"/>
+    <arg name="cam2_name" default="cam2"/>
+
+    <!--Cam Node -->
+    <node name="cam2" pkg="cv_camera" type="cv_camera_node">
+        <param name="rate" type="int" value="$(arg rate)"/>
+        <param name="_frame_id" type="string" value="$(arg cam2_frame_id)"/>
+        <param name="_device_id" type="int" value="$(arg cam2_id)"/>
+        <param name="__name" type="string" value="$(arg cam2_name)"/>
+    </node>
+
+    <!--Rviz transform -->
+    <node name="rviz_transform_publisher_cam2" pkg="tf2_ros" type="static_transform_publisher"
+          args="0 0 0 0 0 0 1 /map /cam2">
+    </node>
+
+    <!-- Image rectification Node -->
+    <node name="cam2_rect" pkg="image_proc" type="image_proc" ns="cam2"/>
+
+
+    <!-- April ros-->
+    <!--General args -->
+    <arg name="launch_prefix" default=""/> <!-- set to value="gdbserver localhost:10000" for remote debugging -->
+    <arg name="image_topic" default="image_rect_color"/>
+
+
+    <!--Cam1 tags -->
+    <!-- args-->
+    <arg name="april_camera_name_cam1" default="cam1"/>
+    <arg name="april_camera_frame_cam1" default="cam1"/>
+
+
+    <group>
+    <arg name="april_node_namespace_cam1" default="apriltag_ros_continuous_node_cam1"/>
+
+    <rosparam command="load" file="$(find sim2real_dynamics_sawyer)/config/april_ros/settings.yaml" ns="$(arg april_node_namespace_cam1)"/>
+    <rosparam command="load" file="$(find sim2real_dynamics_sawyer)/config/april_ros/tags.yaml" ns="$(arg april_node_namespace_cam1)"/>
+
+
+    <!-- Remap outputs -->
+    <remap from="tag_detections" to="/cam1/tag_detections"/>
+    <remap from="tag_detections_image" to="/cam1/tag_detections_image"/>
+
+    <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="$(arg april_node_namespace_cam1)" clear_params="true"
+          output="screen" launch-prefix="$(arg launch_prefix)">
+        <!-- Remap topics from those used in code to those on the ROS network -->
+        <remap from="image_rect" to="$(arg april_camera_name_cam1)/$(arg image_topic)"/>
+        <remap from="camera_info" to="$(arg april_camera_name_cam1)/camera_info"/>
+
+        <param name="camera_frame" type="str" value="$(arg april_camera_frame_cam1)"/>
+        <param name="publish_tag_detections_image" type="bool" value="false"/>      <!-- default: false -->
+    </node>
+    </group>
+
+    <!--CSam2 tags -->
+    <!-- args-->
+    <arg name="april_node_namespace_cam2" default="apriltag_ros_continuous_node_cam2"/>
+    <arg name="april_camera_name_cam2" default="cam2"/>
+    <arg name="april_camera_frame_cam2" default="cam2"/>
+
+
+    <group>
+    <!-- Remap outputs -->
+    <remap from="tag_detections" to="/cam2/tag_detections"/>
+    <remap from="tag_detections_image" to="/cam2/tag_detections_image"/>
+
+
+    <rosparam command="load" file="$(find sim2real_dynamics_sawyer)/config/april_ros/settings.yaml" ns="$(arg april_node_namespace_cam2)"/>
+    <rosparam command="load" file="$(find sim2real_dynamics_sawyer)/config/april_ros/tags.yaml" ns="$(arg april_node_namespace_cam2)"/>
+
+
+    <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="$(arg april_node_namespace_cam2)" clear_params="true"
+          output="screen" launch-prefix="$(arg launch_prefix)">
+        <!-- Remap topics from those used in code to those on the ROS network -->
+        <remap from="image_rect" to="$(arg april_camera_name_cam2)/$(arg image_topic)"/>
+        <remap from="camera_info" to="$(arg april_camera_name_cam2)/camera_info"/>
+
+        <param name="camera_frame" type="str" value="$(arg april_camera_frame_cam2)"/>
+        <param name="publish_tag_detections_image" type="bool" value="false"/>      <!-- default: false -->
+    </node>
+    </group>
+
+
+</launch>

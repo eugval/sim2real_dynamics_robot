@@ -1,0 +1,14 @@
+<!-- Launching the object observations for the pushing task only using one of the cameras-->
+<launch>
+    <arg name="tag_detector" default="april_ros"/>
+    <arg name="camera_name" default="cam1"/>
+
+    <node name="$(arg camera_name)_push_object_obs_publisher" pkg="sim2real_dynamics_sawyer"
+          type="push_object_observation_publisher.py" output="screen">
+        <param name="camera" type="string" value="$(arg camera_name)"/>
+        <param name="tag_detector" type="string" value="$(arg tag_detector)"/>
+    </node>
+
+    <include file="$(find sim2real_dynamics_sawyer)/launch/observations/$(arg tag_detector)/$(arg tag_detector)_$(arg camera_name).launch"/>
+
+</launch>

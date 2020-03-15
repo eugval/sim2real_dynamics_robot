@@ -1,0 +1,7 @@
+<launch>
+  <include file="$(find sim2real_dynamics_sawyer)/launch/slide_control/slide_object_obs.launch"/>
+
+   <node name="slide_characterisation" pkg="sim2real_dynamics_sawyer" type="slide_characterisation.py" output="screen" >
+    </node>
+</launch>
+<!--launch-prefix="gnome-terminal command" -->

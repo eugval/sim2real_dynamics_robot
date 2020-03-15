@@ -1,0 +1,6 @@
+geometry_msgs/Point object_pos_in_eefg
+geometry_msgs/Point goal_pos_in_eefg
+geometry_msgs/Point eef_pos_in_eefg
+geometry_msgs/Point object_vel_in_eefg
+geometry_msgs/Point eef_vel_in_eefg
+float64 z_angle

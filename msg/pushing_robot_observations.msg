@@ -1,0 +1,3 @@
+geometry_msgs/Point eef_pos_in_eefg
+geometry_msgs/Point eef_vel_in_eefg
+geometry_msgs/Point goal_pos_in_eefg

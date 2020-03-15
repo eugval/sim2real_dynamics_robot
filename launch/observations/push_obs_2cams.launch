@@ -1,0 +1,29 @@
+<!-- Launching the observations -both robot and object- for the pushing task-->
+<launch>
+    <arg name="tag_detector" default="april_ros"/>
+
+
+    <!--The launch file for launching the object observations of 2 cameras is not included as we cannot pass the
+    tag detector argument to it -->
+    <include file="$(find sim2real_dynamics_sawyer)/launch/observations/$(arg tag_detector)/$(arg tag_detector)_2cams.launch"/>
+    <include file="$(find sim2real_dynamics_sawyer)/launch/observations/manual_positioning.launch"/>
+
+    <node name="cam1_push_object_obs_publisher" pkg="sim2real_dynamics_sawyer"
+          type="push_object_observation_publisher.py" output="screen">
+        <param name="camera" type="string" value="cam1"/>
+        <param name="tag_detector" type="string" value="$(arg tag_detector)"/>
+    </node>
+
+    <node name="cam2_push_object_obs_publisher" pkg="sim2real_dynamics_sawyer"
+          type="push_object_observation_publisher.py" output="screen">
+        <param name="camera" type="string" value="cam2"/>
+        <param name="tag_detector" type="string" value="$(arg tag_detector)"/>
+
+    </node>
+
+    <node name="push_robot_obs_publisher" pkg="sim2real_dynamics_sawyer" type="push_robot_observation_publisher.py"
+          output="screen"/>
+
+    <node name="push_obs_publisher" pkg="sim2real_dynamics_sawyer" type="push_observation_publisher.py"
+          output="screen"/>
+</launch>

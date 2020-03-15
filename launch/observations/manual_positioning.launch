@@ -1,0 +1,5 @@
+<!-- Launching the manual positioning script, to then activate the manual positioning, the manual_arm_move parameter
+needs to be set to true -->
+<launch>
+    <node name="manual_positioning" pkg="sim2real_dynamics_sawyer" type="manual_positioning.py" output="screen" />
+</launch>

@@ -1,0 +1,12 @@
+<launch>
+     <arg name="tag_detector" default="april_ros"/>
+     <arg name="camera" default="cam2"/>
+
+    <include file="$(find sim2real_dynamics_sawyer)/launch/observations/$(arg tag_detector)/$(arg tag_detector)_$(arg camera).launch"/>
+
+    <node name="slide_object_obs" pkg="sim2real_dynamics_sawyer"
+          type="slide_object_observation_publisher.py" output="screen">
+        <param name="camera" type="string" value="$(arg camera)"/>
+        <param name="tag_detector" type="string" value="$(arg tag_detector)"/>
+    </node>
+</launch>

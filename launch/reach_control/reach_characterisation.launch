@@ -1,0 +1,5 @@
+<launch>
+    <include file="$(find sim2real_dynamics_sawyer)/launch/observations/manual_positioning.launch"/>
+    <node name="reach_characterisation" pkg="sim2real_dynamics_sawyer" type="reach_characterisation.py" output="screen" >
+    </node>
+</launch>

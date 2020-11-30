@@ -6,7 +6,7 @@ using the code found here: https://github.com/eugval/sim2real_dynamics_simulatio
 
 ### Acknowledgements
 
-When using your this code, please consider citing our paper:
+If you use this code in your work, please consider citing our paper:
 ```
 @inproceedings{
 
